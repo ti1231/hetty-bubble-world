@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hetty 的泡泡世界</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <div id="app" aria-live="polite">
+    <!-- 复古电脑桌面入口页 -->
+    <section id="desktop-screen" class="screen active" data-screen="desktop">
+      <div class="mac-menu-bar">
+        <span class="menu-bubble-mark" aria-hidden="true"></span>
+        <span>预览</span><span>文件</span><span>编辑</span><span>视图</span><span>前往</span><span>工具</span>
+      </div>
+      <div class="desktop-stage">
+        <div class="mac-window desktop-window" aria-label="Hetty 文件窗口">
+          <div class="mac-titlebar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><strong>Hetty</strong></div>
+          <div class="toolbar">
+            <button type="button">←<small>返回</small></button>
+            <button type="button">▦<small>查看</small></button>
+            <button type="button">⌂<small>主页</small></button>
+            <button type="button">♡<small>收藏</small></button>
+            <button type="button">⚙<small>设置</small></button>
+          </div>
+          <div id="desktop-files" class="desktop-files" aria-label="主题文件列表"></div>
+        </div>
+        <div class="desktop-icons" aria-label="桌面图标">
+          <button class="desktop-icon" type="button"><span class="icon-drive"></span><b>泡泡硬盘</b></button>
+          <button class="desktop-icon" type="button"><span class="icon-folder"></span><b>我的作品</b></button>
+          <button class="desktop-icon" type="button"><span class="icon-camera"></span><b>回忆相机</b></button>
+          <button class="desktop-icon" type="button"><span class="icon-folder message"></span><b>留言箱</b></button>
+        </div>
+        <div class="entry-dialog mac-panel" role="dialog" aria-modal="true" aria-label="进入泡泡世界确认">
+          <p id="entry-dialog-message">是否进入 Hetty 的泡泡世界？</p>
+          <div class="dialog-actions">
+            <button id="enter-world-btn" class="pixel-button primary" type="button">是，进入</button>
+            <button id="not-now-btn" class="pixel-button" type="button">暂不进入</button>
+          </div>
+        </div>
+        <div class="decor-bubble d1"></div><div class="decor-bubble d2"></div><div class="decor-bubble d3"></div>
+      </div>
+    </section>
+
+    <!-- 加载阶段：自然渐变，不硬切图 -->
+    <section id="loading-screen" class="screen" data-screen="loading">
+      <div class="loading-sea-layer"></div>
+      <div class="loading-desktop-ghost" aria-hidden="true"></div>
+      <div id="loading-bubbles" class="loading-bubbles" aria-hidden="true"></div>
+      <div class="loading-card mac-panel">
+        <p id="loading-text">正在进入泡泡世界 0%</p>
+        <div class="progress-shell"><span id="progress-bar"></span></div>
+      </div>
+    </section>
+
+    <!-- 照片点击收集页 -->
+    <section id="photo-screen" class="screen" data-screen="photoCollect">
+      <div class="photo-sea-layer"></div>
+      <div class="screen-hint mac-panel photo-hint">
+        <p>点击照片，收集进入泡泡世界的记忆泡泡。</p>
+        <span id="photo-count">0 / 5 泡泡已收集</span>
+      </div>
+      <div id="photo-window-area" class="photo-window-area"></div>
+    </section>
+
+    <!-- Hetty 的泡泡世界主页面 -->
+    <section id="bubble-world-screen" class="screen" data-screen="bubbleWorld">
+      <div class="world-bg"></div>
+      <div id="world-decor-bubbles" class="world-decor-bubbles" aria-hidden="true"></div>
+      <header class="world-title">
+        <span class="tiny-file">portfolio.exe</span>
+        <h1>Hetty 的泡泡世界</h1>
+        <p>点击一颗像素泡泡，进入不同空间。</p>
+      </header>
+      <div id="bubble-category-area" class="bubble-category-area" aria-label="泡泡分区入口"></div>
+      <p class="bubble-world-tip">持续更新泡泡中...欢迎光临</p>
+    </section>
+
+    <!-- 作品分区 / 身份卡页面 -->
+    <section id="category-screen" class="screen" data-screen="categoryDetail">
+      <div class="world-bg soft"></div>
+      <div class="category-wrap mac-panel">
+        <header class="category-header">
+          <h2 id="category-title">作品分区</h2>
+          <p id="category-desc">点击作品泡泡查看详情。</p>
+        </header>
+        <div id="category-content" class="category-content"></div>
+      </div>
+    </section>
+
+    <!-- 匿名留言区 -->
+    <section id="message-screen" class="screen" data-screen="messageZone">
+      <div class="world-bg soft"></div>
+      <div class="message-wrap mac-panel">
+        <header>
+          <h2>匿名留言区</h2>
+          <p>给 Hetty 留下一颗匿名泡泡。</p>
+        </header>
+        <label class="sr-only" for="message-input">匿名留言内容</label>
+        <textarea id="message-input" placeholder="写下一句话，它会变成一颗泡泡留在这里。"></textarea>
+        <div class="message-actions">
+          <button id="create-message-btn" class="pixel-button primary" type="button">生成留言泡泡</button>
+          <span id="message-tip"></span>
+        </div>
+        <div id="message-bubble-area" class="message-bubble-area" aria-label="匿名留言泡泡"></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- 全局返回按钮：desktop 初始页自动隐藏 -->
+  <nav id="global-nav" class="global-nav hidden" aria-label="返回导航">
+    <button id="back-btn" class="nav-button" type="button">← 返回上一步</button>
+    <button id="home-btn" class="nav-button" type="button">⌂ 返回起始页</button>
+  </nav>
+
+  <!-- 右下角 CD 音乐播放器：访客只能播放/暂停/下一首 -->
+  <aside id="music-player" class="music-player mac-panel" aria-label="音乐播放器">
+    <div class="mac-titlebar mini"><span class="dot"></span><span class="dot"></span><span class="dot"></span><strong>音乐</strong></div>
+    <div class="music-body">
+      <div id="cd-disc" class="cd-disc" aria-hidden="true"></div>
+      <div class="music-info">
+        <span>正在播放</span>
+        <strong id="track-title">Bubble Gum</strong>
+        <div class="music-controls">
+          <button id="play-btn" class="pixel-button small" type="button">播放</button>
+          <button id="pause-btn" class="pixel-button small" type="button">暂停</button>
+          <button id="next-btn" class="pixel-button small" type="button">下一首</button>
+        </div>
+      </div>
+    </div>
+    <audio id="audio-player" preload="auto"></audio>
+  </aside>
+
+  <!-- 弹窗根节点：作品详情、图片放大、留言详情 -->
+  <div id="modal-root" class="modal-root hidden"></div>
+
+  <script src="./script.js" defer></script>
+</body>
+</html>
